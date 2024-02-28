@@ -62,10 +62,12 @@ public class Main {
                 case 4:
                     System.out.println("Write student's ID: ");
                     int deletionId = scanner.nextInt();
-                    deleteStudent(deletionId, students);
+                    students = deleteStudent(deletionId, students);
             }
+            System.out.println(Arrays.toString(students));
         }
     }
+
 
     public static Student[] addStudent(int id, String firstName, String lastName, String email, int age, Student[] students) {
         int overlap = 0;
@@ -83,9 +85,13 @@ public class Main {
             }
             for (int i = 0; i < students.length; i++) {
                 if (students[i] == null) {
-                    students[i] = new Student(id, firstName, lastName, email, age);
-                    System.out.println(firstName + " successfully added !!!");
-                    break;
+                    if (email.contains("@")) {
+                        students[i] = new Student(id, firstName, lastName, email, age);
+                        System.out.println(firstName + " successfully added !!!");
+                        break;
+                    } else {
+                        System.out.println("Mail must have an '@' sign");
+                    }
                 }
             }
         } else {
@@ -118,16 +124,20 @@ public class Main {
         if (index > -1) {
             students[index].setFirstName(firstName);
             students[index].setLastName(lastName);
-            students[index].setEmail(email);
+            if (email.contains("@")) {
+                students[index].setEmail(email);
+            } else {
+                System.out.println("Mail must have an '@' sign");
+            }
             students[index].setAge(age);
             System.out.println(firstName + " successfully updated !!!");
         } else {
-            System.out.println("No student found with there ID");
+            System.out.println("No student found with their ID");
             System.out.println("Please write existing id:");
         }
     }
 
-    public static void deleteStudent(int id, Student[] students) {
+    public static Student[] deleteStudent(int id, Student[] students) {
         boolean studentFound = false;
         for (int i = 0; i < students.length; i++) {
             if (students[i] != null && students[i].getId() == id) {
@@ -138,8 +148,17 @@ public class Main {
             }
         }
         if (!studentFound) {
-            System.out.println("No student found with there ID");
+            System.out.println("No student found with their ID");
+        } else {
+            Student[] updatedStudents = new Student[students.length - 1];
+            int index = 0;
+            for (Student student : students) {
+                if (student != null) {
+                    updatedStudents[index++] = student;
+                }
+            }
+            return updatedStudents;
         }
+        return students;
     }
-
 }
