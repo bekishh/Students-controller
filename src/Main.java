@@ -64,7 +64,6 @@ public class Main {
                     int deletionId = scanner.nextInt();
                     students = deleteStudent(deletionId, students);
             }
-            System.out.println(Arrays.toString(students));
         }
     }
 
